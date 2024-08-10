@@ -38,7 +38,7 @@
             const geoResponse = await fetch(`https://api.ipgeolocation.io/ipgeo?apiKey=276df15580ca4f9dbc5d73b3fc5692ee&ip=${ipAddress}`);
             const geoData = await geoResponse.json();
 
-            fetch('https://ipv6-flask.onrender.com/save-ip', {
+            fetch('https://ipv6-backend.onrender.com/save-ip', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
