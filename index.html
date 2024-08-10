@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP Address Detector</title>
+    <script>
+        async function sendIPAddress() {
+            let ipAddress = '';
+            let ipType = '';
+
+            function isIPv6(ip) {
+                return ip.includes(':');
+            }
+
+            try {
+                const ipv6Response = await fetch('https://api64.ipify.org?format=json');
+                const ipv6Data = await ipv6Response.json();
+                ipAddress = ipv6Data.ip;
+
+                if (isIPv6(ipAddress)) {
+                    ipType = 'IPv6';
+                } else {
+                    throw new Error('Detected IPv4 when expecting IPv6');
+                }
+
+                document.getElementById('ip-display').innerText = `Your IP Address: ${ipAddress} (${ipType})`;
+            } catch (err) {
+                const ipv4Response = await fetch('https://api.ipify.org?format=json');
+                const ipv4Data = await ipv4Response.json();
+                ipAddress = ipv4Data.ip;
+                ipType = 'IPv4';
+
+                document.getElementById('ip-display').innerText = `Your IP Address: ${ipAddress} (${ipType})`;
+            }
+
+            // Fetch geolocation data
+            const geoResponse = await fetch(`https://api.ipgeolocation.io/ipgeo?apiKey=276df15580ca4f9dbc5d73b3fc5692ee&ip=${ipAddress}`);
+            const geoData = await geoResponse.json();
+
+            fetch('https://ipv6-flask.onrender.com/save-ip', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    ip: ipAddress,
+                    type: ipType,
+                    location: geoData
+                })
+            });
+        }
+
+        window.onload = sendIPAddress;
+    </script>
+</head>
+<body>
+    <h1>Detecting IP Address...</h1>
+    <p id="ip-display"></p>
+</body>
+</html>
