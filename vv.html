@@ -77,25 +77,30 @@
         }
 
         function renderPieChart(ipv4Count, ipv6Count) {
-            const ctx = document.getElementById('pieChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'pie',
-                data: {
-                    labels: ['IPv4', 'IPv6'],
-                    datasets: [{
-                        data: [ipv4Count, ipv6Count],
-                        backgroundColor: ['#FF6384', '#36A2EB']
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    animation: {
-                        animateScale: true,
-                        animateRotate: true
-                    }
-                }
-            });
+    const total = ipv4Count + ipv6Count;
+    const ipv4Percentage = ((ipv4Count / total) * 100).toFixed(2);
+    const ipv6Percentage = ((ipv6Count / total) * 100).toFixed(2);
+
+    const ctx = document.getElementById('pieChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: [`IPv4 (${ipv4Percentage}%)`, `IPv6 (${ipv6Percentage}%)`],
+            datasets: [{
+                data: [ipv4Count, ipv6Count],
+                backgroundColor: ['#FF6384', '#36A2EB']
+            }]
+        },
+        options: {
+            responsive: true,
+            animation: {
+                animateScale: true,
+                animateRotate: true
+            }
         }
+    });
+}
+
 
         function renderTestCount(totalTests, entries) {
             document.getElementById('testCount').innerText = `Total: ${totalTests}`;
