@@ -35,7 +35,7 @@
             }
 
             // Fetch geolocation data
-            const geoResponse = await fetch(`https://api.ipgeolocation.io/ipgeo?apiKey=276df15580ca4f9dbc5d73b3fc5692ee&ip=${ipAddress}`);
+            const geoResponse = await fetch(`https://api64.ipgeolocation.io/ipgeo?apiKey=276df15580ca4f9dbc5d73b3fc5692ee&ip=${ipAddress}`);
             const geoData = await geoResponse.json();
 
             fetch('https://ipv6-backend.onrender.com/save-ip', {
